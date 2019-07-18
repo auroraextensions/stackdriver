@@ -16,7 +16,7 @@
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\StackdriverLogger\Model\SystemModel\Module;
+namespace AuroraExtensions\StackdriverLogger\Model\System\Module;
 
 use Magento\Framework\{
     DataObject,

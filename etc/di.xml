@@ -17,7 +17,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="AuroraExtensions\StackdriverLogger\Model\SystemModel\Module\Settings">
+    <type name="AuroraExtensions\StackdriverLogger\Model\System\Module\Settings">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item name="data_types" xsi:type="array">
