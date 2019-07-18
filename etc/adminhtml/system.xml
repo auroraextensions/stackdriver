@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * system.xml
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, which
+ * is bundled with this package in the file LICENSE.txt.
+ *
+ * It is also available on the Internet at the following URL:
+ * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
+ *
+ * @package       AuroraExtensions_StackdriverLogger
+ * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
+ * @license       MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="auroraextensions" translate="label" sortOrder="1000">
+            <label>Aurora Extensions</label>
+        </tab>
+
+        <section id="stackdriverlogger" translate="label" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Stackdriver Logging</label>
+            <tab>auroraextensions</tab>
+            <resource>AuroraExtensions_StackdriverLogger::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Stackdriver Logging</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="gcp_project" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Cloud Platform Project</label>
+                    <comment>The name of the GCP project to use.</comment>
+                </field>
+                <field id="key_file_path" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>JSON Key File Path</label>
+                    <comment>The JSON key file used for authentication.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="logging" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Logging Settings</label>
+                <field id="log_channel" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Channel</label>
+                    <comment>The name of the log where entries should be written. If it does not exist, it will be created.</comment>
+                </field>
+                <field id="data_type" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Data Type</label>
+                    <source_model>AuroraExtensions\StackdriverLogger\Model\SystemModel\Module\Settings</source_model>
+                    <comment>The data type to use when sending data to the Stackdriver Logging API.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
