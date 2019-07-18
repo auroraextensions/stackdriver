@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * di.xml
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, which
+ * is bundled with this package in the file LICENSE.txt.
+ *
+ * It is also available on the Internet at the following URL:
+ * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
+ *
+ * @package       AuroraExtensions_StackdriverLogger
+ * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
+ * @license       MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="AuroraExtensions\StackdriverLogger\Model\SystemModel\Module\Settings">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="data_types" xsi:type="array">
+                    <item name="json" xsi:type="string">JSON</item>
+                    <item name="text" xsi:type="string">Plaintext</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
