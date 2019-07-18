@@ -53,7 +53,7 @@
                 </field>
                 <field id="data_type" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Data Type</label>
-                    <source_model>AuroraExtensions\StackdriverLogger\Model\SystemModel\Module\Settings</source_model>
+                    <source_model>AuroraExtensions\StackdriverLogger\Model\Backend\Source\Select\DataTypes</source_model>
                     <comment>The data type to use when sending data to the Stackdriver Logging API.</comment>
                 </field>
             </group>
