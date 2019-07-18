@@ -70,6 +70,57 @@ class Settings
     /**
      * @param int $store
      * @param string $scope
+     * @return bool
+     */
+    public function isModuleEnabled(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): bool
+    {
+        return (bool) $this->scopeConfig->isSetFlag(
+            'stackdriverlogger/general/enable',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return string
+     */
+    public function getKeyFilePath(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriverlogger/general/key_file_path',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return string
+     */
+    public function getProjectName(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriverlogger/general/gcp_project',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
      * @return string
      */
     public function getLogChannel(
