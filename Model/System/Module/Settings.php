@@ -19,8 +19,13 @@ declare(strict_types=1);
 namespace AuroraExtensions\StackdriverLogger\Model\System\Module;
 
 use Magento\Framework\{
+    App\Config\ScopeConfigInterface,
     DataObject,
     DataObjectFactory
+};
+use Magento\Store\{
+    Model\ScopeInterface as StoreScopeInterface,
+    Model\Store
 };
 
 class Settings
@@ -28,22 +33,28 @@ class Settings
     /** @property DataObject $container */
     protected $container;
 
+    /** @property ScopeConfigInterface $scopeConfig */
+    protected $scopeConfig;
+
     /**
      * @param DataObjectFactory $dataObjectFactory
+     * @param ScopeConfigInterface $scopeConfig
      * @param array $data
      * @return void
      */
     public function __construct(
         DataObjectFactory $dataObjectFactory,
+        ScopeConfigInterface $scopeConfig,
         array $data = []
     ) {
         $this->container = $dataObjectFactory->create($data);
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
      * @return DataObject|null
      */
-    public function getContainer(): ?DataObject
+    protected function getContainer(): ?DataObject
     {
         return $this->container;
     }
@@ -54,5 +65,22 @@ class Settings
     public function getDataTypes(): array
     {
         return $this->getContainer()->getData('data_types') ?? [];
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return string
+     */
+    public function getLogChannel(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriverlogger/logging/log_channel',
+            $scope,
+            $store
+        );
     }
 }
