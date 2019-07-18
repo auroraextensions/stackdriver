@@ -17,12 +17,14 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\StackdriverLogger\Model\Logger\Logger"/>
+
     <type name="AuroraExtensions\StackdriverLogger\Model\System\Module\Settings">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item name="data_types" xsi:type="array">
                     <item name="json" xsi:type="string">JSON</item>
-                    <item name="text" xsi:type="string">Plaintext</item>
+                    <item name="text" xsi:type="string">Text</item>
                 </item>
             </argument>
         </arguments>
