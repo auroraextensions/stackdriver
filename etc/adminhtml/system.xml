@@ -36,6 +36,9 @@
                 <field id="gcp_project" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Google Cloud Platform Project</label>
                     <comment>The name of the GCP project to use.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
                 </field>
                 <field id="key_file_path" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>JSON Key File Path</label>
