@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\StackdriverLogger\Model\Backend\Source\Select;
 
-use AuroraExtensions\StackdriverLogger\Model\SystemModel\Module\Settings;
+use AuroraExtensions\StackdriverLogger\Model\System\Module\Settings;
 use Magento\Framework\Option\ArrayInterface;
 
 class DataTypes implements ArrayInterface
