@@ -16,7 +16,7 @@
     "php": ">=7.2",
     "magento/framework": "102.*.*",
     "google/cloud-logging": "~1.16.5",
-    "google/cloud-error-reporting": ""
+    "google/cloud-error-reporting": "~0.14.5"
   },
   "autoload": {
     "files": [
