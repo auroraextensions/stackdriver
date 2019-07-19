@@ -11,7 +11,7 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
  *
- * @package       AuroraExtensions_StackdriverLogger
+ * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
@@ -26,7 +26,7 @@
             <class>separator-top</class>
             <label>Stackdriver Logging</label>
             <tab>auroraextensions</tab>
-            <resource>AuroraExtensions_StackdriverLogger::configuration</resource>
+            <resource>AuroraExtensions_Stackdriver::configuration</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Settings</label>
                 <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -56,7 +56,7 @@
                 </field>
                 <field id="data_type" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Data Type</label>
-                    <source_model>AuroraExtensions\StackdriverLogger\Model\Backend\Source\Select\DataTypes</source_model>
+                    <source_model>AuroraExtensions\Stackdriver\Model\Backend\Source\Select\DataTypes</source_model>
                     <comment>The data type to use when sending data to the Stackdriver Logging API.</comment>
                 </field>
             </group>

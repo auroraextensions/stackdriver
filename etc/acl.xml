@@ -11,7 +11,7 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
  *
- * @package       AuroraExtensions_StackdriverLogger
+ * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
@@ -23,7 +23,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="AuroraExtensions_StackdriverLogger::configuration" title="Stackdriver Logging"/>
+                            <resource id="AuroraExtensions_Stackdriver::configuration" title="Stackdriver Logging"/>
                         </resource>
                     </resource>
                 </resource>

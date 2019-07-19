@@ -10,15 +10,15 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
  *
- * @package       AuroraExtensions_StackdriverLogger
+ * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\StackdriverLogger\Model\Backend\Source\Select;
+namespace AuroraExtensions\Stackdriver\Model\Backend\Source\Select;
 
-use AuroraExtensions\StackdriverLogger\Model\System\Module\Settings;
+use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Magento\Framework\Option\ArrayInterface;
 
 class DataTypes implements ArrayInterface
