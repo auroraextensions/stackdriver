@@ -16,7 +16,7 @@
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\Stackdriver\Model\Logger;
+namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Google\Cloud\Logging\LoggingClient;
