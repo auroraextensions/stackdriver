@@ -1,6 +1,6 @@
 {
-  "name": "auroraextensions/stackdriverlogger",
-  "description": "Stackdriver Logging API integration for Magento 2.3.",
+  "name": "auroraextensions/stackdriver",
+  "description": "Stackdriver service integrations for Magento 2.3.",
   "type": "magento2-module",
   "license": "MIT",
   "authors": [
@@ -15,14 +15,15 @@
   "require": {
     "php": ">=7.2",
     "magento/framework": "102.*.*",
-    "google/cloud-logging": "~1.16.5"
+    "google/cloud-logging": "~1.16.5",
+    "google/cloud-error-reporting": ""
   },
   "autoload": {
     "files": [
       "registration.php"
     ],
     "psr-4": {
-      "AuroraExtensions\\StackdriverLogger\\": ""
+      "AuroraExtensions\\Stackdriver\\": ""
     }
   }
 }

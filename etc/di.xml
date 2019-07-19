@@ -11,15 +11,15 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
  *
- * @package       AuroraExtensions_StackdriverLogger
+ * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\StackdriverLogger\Model\Logger\Logger"/>
+    <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\Stackdriver\Model\Logger\Logger"/>
 
-    <type name="AuroraExtensions\StackdriverLogger\Model\System\Module\Settings">
+    <type name="AuroraExtensions\Stackdriver\Model\System\Module\Settings">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item name="data_types" xsi:type="array">
