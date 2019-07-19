@@ -20,13 +20,19 @@ namespace AuroraExtensions\StackdriverLogger\Model\Logger;
 
 use AuroraExtensions\StackdriverLogger\Model\System\Module\Settings;
 use Google\Cloud\Logging\LoggingClient;
-use Magento\Framework\Logger\Monolog as FrameworkLogger;
+use Magento\Framework\{
+    Exception\LocalizedException,
+    Logger\Monolog
+};
 use Psr\Log\LoggerInterface;
 
-class Logger extends FrameworkLogger implements LoggerInterface
+class Logger extends Monolog implements LoggerInterface
 {
     /** @property LoggingClient $client */
     protected $client;
+
+    /** @property array $config */
+    protected $config;
 
     /** @property Settings $settings */
     protected $settings;
@@ -35,7 +41,6 @@ class Logger extends FrameworkLogger implements LoggerInterface
      * @param string $name
      * @param array $handlers
      * @param array $processors
-     * @param LoggingClient $client
      * @param Settings $settings
      * @return void
      */
@@ -43,7 +48,6 @@ class Logger extends FrameworkLogger implements LoggerInterface
         $name,
         array $handlers = [],
         array $processors = [],
-        LoggingClient $client,
         Settings $settings
     ) {
         parent::__construct(
@@ -52,8 +56,30 @@ class Logger extends FrameworkLogger implements LoggerInterface
             $processors
         );
 
-        $this->client = $client;
         $this->settings = $settings;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getConfig(): array
+    {
+        return [
+            'projectId'   => $this->settings->getProjectName(),
+            'keyFilePath' => $this->settings->getKeyFilePath(),
+        ];
+    }
+
+    /**
+     * @return LoggingClient
+     */
+    protected function getLoggingClient(): LoggingClient
+    {
+        if (!$this->client) {
+            $this->client = new LoggingClient($this->getConfig());
+        }
+
+        return $this->client;
     }
 
     /**
@@ -64,9 +90,18 @@ class Logger extends FrameworkLogger implements LoggerInterface
      */
     public function addRecord($level, $message, array $context = [])
     {
-        /** @var Google\Cloud\Logging\Logger $logger */
-        $logger = $this->client->logger($this->settings->getLogChannel());
-        $logger->write($message);
+        if ($this->settings->isModuleEnabled()) {
+            try {
+                /** @var Google\Cloud\Logging\LoggingClient $client */
+                $client = $this->getLoggingClient();
+
+                /** @var Google\Cloud\Logging\Logger $logger */
+                $logger = $client->logger($this->settings->getLogChannel());
+                $logger->write($message);
+            } catch (\Exception $e) {
+                /* No action required. */
+            }
+        }
 
         return parent::addRecord($level, $message, $context);
     }
