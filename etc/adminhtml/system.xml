@@ -54,10 +54,10 @@
                     <label>Log Channel</label>
                     <comment>The name of the log where entries should be written. If it does not exist, it will be created.</comment>
                 </field>
-                <field id="data_type" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Data Type</label>
-                    <source_model>AuroraExtensions\Stackdriver\Model\Backend\Source\Select\DataTypes</source_model>
-                    <comment>The data type to use when sending data to the Stackdriver Logging API.</comment>
+                <field id="include_log_context" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Include Log Context</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Include context when creating a log entry.</comment>
                 </field>
             </group>
         </section>

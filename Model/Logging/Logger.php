@@ -19,7 +19,10 @@ declare(strict_types=1);
 namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
-use Google\Cloud\Logging\LoggingClient;
+use Google\Cloud\{
+    Logging\Logger as GoogleCloudLogger,
+    Logging\LoggingClient
+};
 use Magento\Framework\{
     Exception\LocalizedException,
     Logger\Monolog
@@ -65,8 +68,8 @@ class Logger extends Monolog implements LoggerInterface
     protected function getConfig(): array
     {
         return [
-            'projectId'   => $this->settings->getProjectName(),
-            'keyFilePath' => $this->settings->getKeyFilePath(),
+            'projectId'   => $this->getSettings()->getProjectName(),
+            'keyFilePath' => $this->getSettings()->getKeyFilePath(),
         ];
     }
 
@@ -82,22 +85,32 @@ class Logger extends Monolog implements LoggerInterface
         return $this->client;
     }
 
+    protected function getSettings(): Settings
+    {
+        return $this->settings;
+    }
+
     /**
      * @param int $level
      * @param string $message
      * @param array $context
      * @return bool
+     * @todo: Apply user-defined labels to log entry.
      */
     public function addRecord($level, $message, array $context = [])
     {
-        if ($this->settings->isModuleEnabled()) {
+        if ($this->getSettings()->isModuleEnabled()) {
             try {
                 /** @var Google\Cloud\Logging\LoggingClient $client */
                 $client = $this->getLoggingClient();
 
                 /** @var Google\Cloud\Logging\Logger $logger */
-                $logger = $client->logger($this->settings->getLogChannel());
-                $logger->write($message);
+                $logger = $client->psrLogger($this->getSettings()->getLogChannel());
+
+                /** @var array $fields */
+                $fields = $this->getSettings()->includeLogContext() ? $context : [];
+
+                $logger->log($level, $message, $fields);
             } catch (\Exception $e) {
                 /* No action required. */
             }

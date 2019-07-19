@@ -134,4 +134,21 @@ class Settings
             $store
         );
     }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return bool
+     */
+    public function includeLogContext(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): bool
+    {
+        return (bool) $this->scopeConfig->isSetFlag(
+            'stackdriver/logging/include_log_context',
+            $scope,
+            $store
+        );
+    }
 }
