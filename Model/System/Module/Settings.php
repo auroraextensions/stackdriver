@@ -21,7 +21,7 @@ namespace AuroraExtensions\Stackdriver\Model\System\Module;
 use Magento\Framework\{
     App\Config\ScopeConfigInterface,
     DataObject,
-    DataObjectFactory
+    DataObject\Factory as DataObjectFactory
 };
 use Magento\Store\{
     Model\ScopeInterface as StoreScopeInterface,
