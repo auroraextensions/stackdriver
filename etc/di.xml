@@ -9,7 +9,7 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
@@ -17,7 +17,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\Stackdriver\Model\Logger\Logger"/>
+    <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
 
     <type name="AuroraExtensions\Stackdriver\Model\System\Module\Settings">
         <arguments>

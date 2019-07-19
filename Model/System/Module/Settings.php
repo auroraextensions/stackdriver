@@ -8,7 +8,7 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
@@ -78,7 +78,7 @@ class Settings
     ): bool
     {
         return (bool) $this->scopeConfig->isSetFlag(
-            'stackdriverlogger/general/enable',
+            'stackdriver/general/enable',
             $scope,
             $store
         );
@@ -95,7 +95,7 @@ class Settings
     ): string
     {
         return $this->scopeConfig->getValue(
-            'stackdriverlogger/general/key_file_path',
+            'stackdriver/general/key_file_path',
             $scope,
             $store
         );
@@ -112,7 +112,7 @@ class Settings
     ): string
     {
         return $this->scopeConfig->getValue(
-            'stackdriverlogger/general/gcp_project',
+            'stackdriver/general/gcp_project',
             $scope,
             $store
         );
@@ -129,7 +129,7 @@ class Settings
     ): string
     {
         return $this->scopeConfig->getValue(
-            'stackdriverlogger/logging/log_channel',
+            'stackdriver/logging/log_channel',
             $scope,
             $store
         );

@@ -9,7 +9,7 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriverlogger/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions_Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
@@ -18,7 +18,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <stackdriverlogger>
+        <stackdriver>
             <general>
                 <enable>0</enable>
             </general>
@@ -26,6 +26,6 @@
                 <log_channel>magento</log_channel>
                 <data_type>json</data_type>
             </logging>
-        </stackdriverlogger>
+        </stackdriver>
     </default>
 </config>
