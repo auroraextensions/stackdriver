@@ -143,4 +143,39 @@ class Settings
             $store
         );
     }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return string
+     */
+    public function getLogLevels(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriver/logging/log_levels',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return string
+     */
+    public function getLogLevelsArray(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): array
+    {
+        /** @var array $levels */
+        $levels = explode(',', $this->getLogLevels($store, $scope));
+
+        return array_values(
+            array_map('trim', $levels)
+        );
+    }
 }
