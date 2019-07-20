@@ -24,7 +24,8 @@
             </general>
             <logging>
                 <log_channel>magento</log_channel>
-                <data_type>json</data_type>
+                <include_log_context>0</include_log_context>
+                <log_levels>emergency,alert,critical,error</log_levels>
             </logging>
         </stackdriver>
     </default>
