@@ -59,6 +59,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Include context when creating a log entry.</comment>
                 </field>
+                <field id="log_levels" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Levels</label>
+                    <source_model>AuroraExtensions\Stackdriver\Model\Backend\Source\Select\LogLevels</source_model>
+                    <comment>Only create entries for these log levels.</comment>
+                </field>
             </group>
         </section>
     </system>
