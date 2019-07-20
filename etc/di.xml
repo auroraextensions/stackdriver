@@ -22,11 +22,24 @@
     <type name="AuroraExtensions\Stackdriver\Model\System\Module\Settings">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="data_types" xsi:type="array">
-                    <item name="json" xsi:type="string">JSON</item>
-                    <item name="text" xsi:type="string">Text</item>
+                <item name="log_levels" xsi:type="array">
+                    <item name="emergency" xsi:type="const">Psr\Log\LogLevel::EMERGENCY</item>
+                    <item name="alert" xsi:type="const">Psr\Log\LogLevel::ALERT</item>
+                    <item name="critical" xsi:type="const">Psr\Log\LogLevel::CRITICAL</item>
+                    <item name="error" xsi:type="const">Psr\Log\LogLevel::ERROR</item>
+                    <item name="warning" xsi:type="const">Psr\Log\LogLevel::WARNING</item>
+                    <item name="notice" xsi:type="const">Psr\Log\LogLevel::NOTICE</item>
+                    <item name="info" xsi:type="const">Psr\Log\LogLevel::INFO</item>
+                    <item name="debug" xsi:type="const">Psr\Log\LogLevel::DEBUG</item>
                 </item>
             </argument>
         </arguments>
     </type>
+
+    <virtualType name="AuroraExtensions\Stackdriver\Model\Backend\Source\Select\LogLevels"
+                 type="AuroraExtensions\Stackdriver\Model\Backend\Source\Select\Generic">
+        <arguments>
+            <argument name="key" xsi:type="string">log_levels</argument>
+        </arguments>
+    </virtualType>
 </config>
