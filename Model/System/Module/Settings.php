@@ -54,17 +54,9 @@ class Settings
     /**
      * @return DataObject|null
      */
-    protected function getContainer(): ?DataObject
+    public function getContainer(): ?DataObject
     {
         return $this->container;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataTypes(): array
-    {
-        return $this->getContainer()->getData('data_types') ?? [];
     }
 
     /**
