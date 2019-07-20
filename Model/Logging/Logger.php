@@ -20,7 +20,7 @@ namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Google\Cloud\{
-    Logging\Logger as GoogleCloudLogger,
+    Logging\Logger as StackdriverLogger,
     Logging\LoggingClient
 };
 use Magento\Framework\{
@@ -85,34 +85,59 @@ class Logger extends Monolog implements LoggerInterface
         return $this->client;
     }
 
+    /**
+     * @return Settings
+     */
     protected function getSettings(): Settings
     {
         return $this->settings;
     }
 
     /**
-     * @param int $level
+     * Get log levels selected from admin.
+     *
+     * @return array
+     */
+    protected function getLogLevels(): array
+    {
+        return $this->getSettings()->getLogLevelsArray();
+    }
+
+    /**
+     * @param int|string $level
      * @param string $message
      * @param array $context
      * @return bool
-     * @todo: Apply user-defined labels to log entry.
      */
     public function addRecord($level, $message, array $context = [])
     {
         if ($this->getSettings()->isModuleEnabled()) {
-            try {
-                /** @var Google\Cloud\Logging\LoggingClient $client */
-                $client = $this->getLoggingClient();
+            /** @var array $levelMap */
+            $levelMap = StackdriverLogger::getLogLevelMap();
 
-                /** @var Google\Cloud\Logging\Logger $logger */
-                $logger = $client->psrLogger($this->getSettings()->getLogChannel());
+            /** @var string $logLevel */
+            $logLevel = is_numeric($level)
+                ? strtolower($levelMap[$level])
+                : $level;
 
-                /** @var array $fields */
-                $fields = $this->getSettings()->includeLogContext() ? $context : [];
+            /** @var array $logLevels */
+            $logLevels = $this->getLogLevels();
 
-                $logger->log($level, $message, $fields);
-            } catch (\Exception $e) {
-                /* No action required. */
+            if (in_array($logLevel, $logLevels)) {
+                try {
+                    /** @var Google\Cloud\Logging\LoggingClient $client */
+                    $client = $this->getLoggingClient();
+
+                    /** @var Google\Cloud\Logging\PsrLogger $logger */
+                    $logger = $client->psrLogger($this->getSettings()->getLogChannel());
+
+                    /** @var array $options */
+                    $options = $this->getSettings()->includeLogContext() ? $context : [];
+
+                    $logger->log($level, $message, $options);
+                } catch (\Exception $e) {
+                    /* No action required. */
+                }
             }
         }
 
