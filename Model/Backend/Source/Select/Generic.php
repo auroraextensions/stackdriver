@@ -1,6 +1,6 @@
 <?php
 /**
- * DataTypes.php
+ * Generic.php
  *
  * NOTICE OF LICENSE
  *
@@ -21,22 +21,27 @@ namespace AuroraExtensions\Stackdriver\Model\Backend\Source\Select;
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Magento\Framework\Option\ArrayInterface;
 
-class DataTypes implements ArrayInterface
+class Generic implements ArrayInterface
 {
     /** @property array $options */
     protected $options = [];
 
     /**
      * @param Settings $settings
+     * @param string $key
      * @return void
      */
-    public function __construct(Settings $settings)
-    {
-        /** @var array $dataTypes */
-        $dataTypes = array_flip($settings->getDataTypes());
+    public function __construct(
+        Settings $settings,
+        string $key
+    ) {
+        /** @var array $data */
+        $data = array_flip(
+            $settings->getContainer()->getData($key) ?? []
+        );
 
         array_walk(
-            $dataTypes,
+            $data,
             [
                 $this,
                 'setOption'
