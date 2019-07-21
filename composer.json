@@ -16,6 +16,7 @@
     "php": ">=7.2",
     "psr/log": "~1.1.0",
     "magento/framework": "102.*.*",
+    "google/cloud-core": "~1.29.0",
     "google/cloud-logging": "~1.16.5",
     "google/cloud-error-reporting": "~0.14.5"
   },
