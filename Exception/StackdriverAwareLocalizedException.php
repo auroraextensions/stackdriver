@@ -16,12 +16,12 @@
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\Stackdriver\Model\Exception;
+namespace AuroraExtensions\Stackdriver\Exception;
 
 use AuroraExtensions\Stackdriver\Model\Logging\Stackdriver;
 use Google\Cloud\ErrorReporting\Bootstrap;
 use Magento\Framework\{
-    Exception\LocalizedException
+    Exception\LocalizedException,
     Phrase
 };
 
