@@ -104,15 +104,46 @@
                     <label>Log Channel</label>
                     <comment>The log name where entries are written. If it does not exist, it will be created.</comment>
                 </field>
-                <field id="include_log_context" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Include Log Context</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Include context details with each Stackdriver log entry.</comment>
-                </field>
-                <field id="log_levels" translate="label comment" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="log_levels" translate="label comment" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Log Levels</label>
                     <source_model>AuroraExtensions\Stackdriver\Model\Backend\Source\Select\LogLevels</source_model>
                     <comment>Limit Stackdriver log entries to the selected log levels.</comment>
+                </field>
+            </group>
+            <group id="error_reporting" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Error Reporting Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Error Reporting</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="type_urn" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Type URN</label>
+                    <comment>The URN value of the log entry @type property. Allows Stackdriver Error Reporting to identify exceptions.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="include_context" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Include Exception Context</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Include exception context with Stackdriver log entry. Typically includes stack traces.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="service" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Service</label>
+                    <comment>The service name attached to log entries. Used for grouping exceptions across multiple services.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="version" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Version</label>
+                    <comment>The service version identifier attached to log entries. Used for grouping exceptions within services.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

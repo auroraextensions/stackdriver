@@ -24,9 +24,15 @@
             </general>
             <logging>
                 <log_channel>magento</log_channel>
-                <include_log_context>0</include_log_context>
                 <log_levels>emergency,alert,critical,error</log_levels>
             </logging>
+            <error_reporting>
+                <enable>1</enable>
+                <type_urn>type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent</type_urn>
+                <include_context>1</include_context>
+                <service>magento</service>
+                <version>latest</version>
+            </error_reporting>
         </stackdriver>
     </default>
 </config>
