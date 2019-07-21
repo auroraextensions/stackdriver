@@ -95,7 +95,18 @@ class Logger extends Monolog implements LoggerInterface
                     $logger = $this->getStackdriver()->getLogger();
 
                     /** @var array $options */
-                    $options = $this->getSettings()->includeLogContext() ? $context : [];
+                    $options = [];
+
+                    if ($this->getSettings()->isErrorReportingEnabled()) {
+                        $options['@type'] = $this->getSettings()->getTypeUrn();
+                    }
+
+                    if ($this->getSettings()->includeContext()) {
+                        $options = array_merge(
+                            $options,
+                            $context
+                        );
+                    }
 
                     $logger->log($level, $message, $options);
                 } catch (\Exception $e) {
