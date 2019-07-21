@@ -59,6 +59,8 @@ class Settings
         return $this->container;
     }
 
+    /* General Settings */
+
     /**
      * @param int $store
      * @param string $scope
@@ -110,6 +112,8 @@ class Settings
         );
     }
 
+    /* Logging Settings */
+
     /**
      * @param int $store
      * @param string $scope
@@ -122,23 +126,6 @@ class Settings
     {
         return $this->scopeConfig->getValue(
             'stackdriver/logging/log_channel',
-            $scope,
-            $store
-        );
-    }
-
-    /**
-     * @param int $store
-     * @param string $scope
-     * @return bool
-     */
-    public function includeLogContext(
-        int $store = Store::DEFAULT_STORE_ID,
-        string $scope = StoreScopeInterface::SCOPE_STORE
-    ): bool
-    {
-        return (bool) $this->scopeConfig->isSetFlag(
-            'stackdriver/logging/include_log_context',
             $scope,
             $store
         );
@@ -176,6 +163,93 @@ class Settings
 
         return array_values(
             array_map('trim', $levels)
+        );
+    }
+
+    /* Error Reporting Settings */
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return bool
+     */
+    public function isErrorReportingEnabled(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): bool
+    {
+        return (bool) $this->scopeConfig->isSetFlag(
+            'stackdriver/error_reporting/enable',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return bool
+     */
+    public function getTypeUrn(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriver/error_reporting/type_urn',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return bool
+     */
+    public function includeContext(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): bool
+    {
+        return (bool) $this->scopeConfig->isSetFlag(
+            'stackdriver/error_reporting/include_context',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return bool
+     */
+    public function getErrorReportingService(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriver/error_reporting/service',
+            $scope,
+            $store
+        );
+    }
+
+    /**
+     * @param int $store
+     * @param string $scope
+     * @return bool
+     */
+    public function getErrorReportingVersion(
+        int $store = Store::DEFAULT_STORE_ID,
+        string $scope = StoreScopeInterface::SCOPE_STORE
+    ): string
+    {
+        return $this->scopeConfig->getValue(
+            'stackdriver/error_reporting/version',
+            $scope,
+            $store
         );
     }
 }
