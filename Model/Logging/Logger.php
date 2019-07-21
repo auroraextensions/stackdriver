@@ -20,7 +20,8 @@ namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Google\Cloud\{
-    Logging\Logger as StackdriverLogger,
+    ErrorReporting\Bootstrap,
+    Logging\Logger as GoogleCloudLogger,
     Logging\LoggingClient
 };
 use Magento\Framework\{
@@ -31,27 +32,23 @@ use Psr\Log\LoggerInterface;
 
 class Logger extends Monolog implements LoggerInterface
 {
-    /** @property LoggingClient $client */
-    protected $client;
-
-    /** @property array $config */
-    protected $config;
-
-    /** @property Settings $settings */
-    protected $settings;
+    /** @property Stackdriver $stackdriver */
+    protected $stackdriver;
 
     /**
      * @param string $name
      * @param array $handlers
      * @param array $processors
      * @param Settings $settings
+     * @param Stackdriver $stackdriver
      * @return void
      */
     public function __construct(
         $name,
         array $handlers = [],
         array $processors = [],
-        Settings $settings
+        Settings $settings,
+        Stackdriver $stackdriver
     ) {
         parent::__construct(
             $name,
@@ -60,47 +57,23 @@ class Logger extends Monolog implements LoggerInterface
         );
 
         $this->settings = $settings;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getConfig(): array
-    {
-        return [
-            'projectId'   => $this->getSettings()->getProjectName(),
-            'keyFilePath' => $this->getSettings()->getKeyFilePath(),
-        ];
-    }
-
-    /**
-     * @return LoggingClient
-     */
-    protected function getLoggingClient(): LoggingClient
-    {
-        if (!$this->client) {
-            $this->client = new LoggingClient($this->getConfig());
-        }
-
-        return $this->client;
+        $this->stackdriver = $stackdriver;
     }
 
     /**
      * @return Settings
      */
-    protected function getSettings(): Settings
+    public function getSettings(): Settings
     {
         return $this->settings;
     }
 
     /**
-     * Get log levels selected from admin.
-     *
-     * @return array
+     * @return Stackdriver
      */
-    protected function getLogLevels(): array
+    public function getStackdriver(): Stackdriver
     {
-        return $this->getSettings()->getLogLevelsArray();
+        return $this->stackdriver;
     }
 
     /**
@@ -113,7 +86,7 @@ class Logger extends Monolog implements LoggerInterface
     {
         if ($this->getSettings()->isModuleEnabled()) {
             /** @var array $levelMap */
-            $levelMap = StackdriverLogger::getLogLevelMap();
+            $levelMap = GoogleCloudLogger::getLogLevelMap();
 
             /** @var string $logLevel */
             $logLevel = is_numeric($level)
@@ -121,15 +94,12 @@ class Logger extends Monolog implements LoggerInterface
                 : $level;
 
             /** @var array $logLevels */
-            $logLevels = $this->getLogLevels();
+            $logLevels = $this->getStackdriver()->getLogLevels();
 
             if (in_array($logLevel, $logLevels)) {
                 try {
-                    /** @var Google\Cloud\Logging\LoggingClient $client */
-                    $client = $this->getLoggingClient();
-
                     /** @var Google\Cloud\Logging\PsrLogger $logger */
-                    $logger = $client->psrLogger($this->getSettings()->getLogChannel());
+                    $logger = $this->getStackdriver()->getLogger();
 
                     /** @var array $options */
                     $options = $this->getSettings()->includeLogContext() ? $context : [];
