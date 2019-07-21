@@ -21,8 +21,8 @@ namespace AuroraExtensions\Stackdriver\Model\Logging;
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Google\Cloud\{
     Core\Report\SimpleMetadataProvider,
-    Logging\PsrLogger,
-    Logging\LoggingClient
+    Logging\LoggingClient,
+    Logging\PsrLogger
 };
 
 class Stackdriver
@@ -32,6 +32,9 @@ class Stackdriver
 
     /** @property PsrLogger $logger */
     protected $logger;
+
+    /** @property SimpleMetadataProvider $metadataProvider */
+    protected $metadataProvider;
 
     /** @property Settings $settings */
     protected $settings;
@@ -98,11 +101,15 @@ class Stackdriver
      */
     public function getMetadataProvider(): SimpleMetadataProvider
     {
-        if (!$this->metadata) {
-            $this->metadata = new SimpleMetadataProvider([], $this->getConfig()['projectId']);
+        if (!$this->metadataProvider) {
+            $this->metadataProvider = new SimpleMetadataProvider(
+                [],
+                $this->getConfig()['projectId'],
+                $this->getSettings()->getLogChannel()
+            );
         }
 
-        return $this->metadata;
+        return $this->metadataProvider;
     }
 
     /**

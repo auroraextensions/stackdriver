@@ -21,6 +21,7 @@ namespace AuroraExtensions\Stackdriver\Exception;
 use AuroraExtensions\Stackdriver\Model\Logging\Stackdriver;
 use Google\Cloud\ErrorReporting\Bootstrap;
 use Magento\Framework\{
+    App\ObjectManager,
     Exception\LocalizedException,
     Phrase
 };
@@ -37,13 +38,14 @@ class StackdriverAwareLocalizedException extends LocalizedException
      * @param Phrase $phrase
      * @param Exception|null $cause
      * @param int|string $code
+     * @param Stackdriver|null $stackdriver
      * @return void
      */
     public function __construct(
         Phrase $phrase,
         \Exception $cause = null,
         $code = 0,
-        Stackdriver $stackdriver
+        Stackdriver $stackdriver = null
     ) {
         parent::__construct(
             $phrase,
@@ -53,14 +55,14 @@ class StackdriverAwareLocalizedException extends LocalizedException
         $this->stackdriver = $stackdriver;
 
         if (!self::$logger) {
-            self::initLogger();
+            $this->initLogger();
         }
     }
 
     /**
      * @return void
      */
-    public static function initLogger(): void
+    public function initLogger(): void
     {
         self::$logger = $this->stackdriver->getLogger();
         Bootstrap::init(self::$logger);
