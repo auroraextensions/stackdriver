@@ -19,15 +19,8 @@ declare(strict_types=1);
 namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
-use Google\Cloud\{
-    ErrorReporting\Bootstrap,
-    Logging\Logger as GoogleCloudLogger,
-    Logging\LoggingClient
-};
-use Magento\Framework\{
-    Exception\LocalizedException,
-    Logger\Monolog
-};
+use Google\Cloud\Logging\Logger as GoogleCloudLogger;
+use Magento\Framework\Logger\Monolog;
 use Psr\Log\LoggerInterface;
 
 class Logger extends Monolog implements LoggerInterface
