@@ -21,7 +21,6 @@ namespace AuroraExtensions\Stackdriver\Exception;
 use AuroraExtensions\Stackdriver\Model\Logging\Stackdriver;
 use Google\Cloud\ErrorReporting\Bootstrap;
 use Magento\Framework\{
-    App\ObjectManager,
     Exception\LocalizedException,
     Phrase
 };
