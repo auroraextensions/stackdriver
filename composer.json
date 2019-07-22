@@ -1,6 +1,6 @@
 {
   "name": "auroraextensions/stackdriver",
-  "description": "Stackdriver integrations for Magento.",
+  "description": "Integrate Stackdriver services into Magento Open Source and Magento Commerce.",
   "type": "magento2-module",
   "license": "MIT",
   "authors": [
