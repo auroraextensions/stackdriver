@@ -21,3 +21,5 @@ ComponentRegistrar::register(
     'AuroraExtensions_Stackdriver',
     __DIR__
 );
+
+require_once __DIR__ . '/bootstrap.php';
