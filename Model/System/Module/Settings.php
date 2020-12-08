@@ -4,15 +4,15 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT License, which
+ * This source file is subject to the MIT license, which
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions_Stackdriver
+ * @package       AuroraExtensions\Stackdriver\Model\System\Module
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
- * @license       MIT License
+ * @license       MIT
  */
 declare(strict_types=1);
 
@@ -28,27 +28,31 @@ use Magento\Store\{
     Model\Store
 };
 
+use function explode;
+use function array_map;
+use function array_values;
+
 class Settings
 {
-    /** @property DataObject $container */
-    protected $container;
+    /** @var DataObject $container */
+    private $container;
 
-    /** @property ScopeConfigInterface $scopeConfig */
-    protected $scopeConfig;
+    /** @var ScopeConfigInterface $scopeConfig */
+    private $scopeConfig;
 
     /**
-     * @param DataObjectFactory $dataObjectFactory
      * @param ScopeConfigInterface $scopeConfig
+     * @param DataObjectFactory $dataObjectFactory
      * @param array $data
      * @return void
      */
     public function __construct(
-        DataObjectFactory $dataObjectFactory,
         ScopeConfigInterface $scopeConfig,
+        DataObjectFactory $dataObjectFactory,
         array $data = []
     ) {
-        $this->container = $dataObjectFactory->create($data);
         $this->scopeConfig = $scopeConfig;
+        $this->container = $dataObjectFactory->create($data);
     }
 
     /**
