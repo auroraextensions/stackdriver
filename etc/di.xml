@@ -5,18 +5,20 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT License, which
+ * This source file is subject to the MIT license, which
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions_Stackdriver
+ * @package       AuroraExtensions\Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
- * @license       MIT License
+ * @license       MIT
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Stackdriver"/>
+    <preference for="AuroraExtensions\Stackdriver\Api\StackdriverAwareLoggerInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
     <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
 
     <type name="AuroraExtensions\Stackdriver\Model\System\Module\Settings">

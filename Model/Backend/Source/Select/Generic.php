@@ -4,15 +4,15 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT License, which
+ * This source file is subject to the MIT license, which
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions_Stackdriver
+ * @package       AuroraExtensions\Stackdriver\Model\Backend\Source\Select
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
- * @license       MIT License
+ * @license       MIT
  */
 declare(strict_types=1);
 
@@ -21,10 +21,13 @@ namespace AuroraExtensions\Stackdriver\Model\Backend\Source\Select;
 use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
 use Magento\Framework\Option\ArrayInterface;
 
+use function array_flip;
+use function array_walk;
+
 class Generic implements ArrayInterface
 {
-    /** @property array $options */
-    protected $options = [];
+    /** @var array $options */
+    private $options = [];
 
     /**
      * @param Settings $settings

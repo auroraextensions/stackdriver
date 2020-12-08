@@ -5,15 +5,15 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT License, which
+ * This source file is subject to the MIT license, which
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions_Stackdriver
+ * @package       AuroraExtensions\Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
- * @license       MIT License
+ * @license       MIT
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
@@ -21,7 +21,6 @@
         <tab id="auroraextensions" translate="label" sortOrder="1000">
             <label>Aurora Extensions</label>
         </tab>
-
         <section id="stackdriver" translate="label" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Stackdriver</label>

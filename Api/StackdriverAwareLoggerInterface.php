@@ -1,6 +1,6 @@
 <?php
 /**
- * registration.php
+ * StackdriverAwareLoggerInterface.php
  *
  * NOTICE OF LICENSE
  *
@@ -10,14 +10,18 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions\Stackdriver
+ * @package       AuroraExtensions\Stackdriver\Api
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT
  */
-use Magento\Framework\Component\ComponentRegistrar;
+declare(strict_types=1);
 
-ComponentRegistrar::register(
-    ComponentRegistrar::MODULE,
-    'AuroraExtensions_Stackdriver',
-    __DIR__
-);
+namespace AuroraExtensions\Stackdriver\Api;
+
+interface StackdriverAwareLoggerInterface
+{
+    /**
+     * @return \AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface
+     */
+    public function getStackdriver(): StackdriverIntegrationInterface;
+}

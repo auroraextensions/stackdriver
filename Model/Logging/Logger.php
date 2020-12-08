@@ -4,36 +4,49 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT License, which
+ * This source file is subject to the MIT license, which
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions_Stackdriver
+ * @package       AuroraExtensions\Stackdriver\Model\Logging
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
- * @license       MIT License
+ * @license       MIT
  */
 declare(strict_types=1);
 
 namespace AuroraExtensions\Stackdriver\Model\Logging;
 
-use AuroraExtensions\Stackdriver\Model\System\Module\Settings;
+use Exception;
+use AuroraExtensions\Stackdriver\{
+    Api\StackdriverAwareLoggerInterface,
+    Api\StackdriverIntegrationInterface,
+    Model\System\Module\Settings
+};
 use Google\Cloud\Logging\Logger as GoogleCloudLogger;
 use Magento\Framework\Logger\Monolog;
-use Psr\Log\LoggerInterface;
+use Psr\Log\{
+    InvalidArgumentException,
+    LoggerInterface
+};
 
-class Logger extends Monolog implements LoggerInterface
+use function array_merge;
+use function in_array;
+use function is_numeric;
+use function strtolower;
+
+class Logger extends Monolog implements LoggerInterface, StackdriverAwareLoggerInterface
 {
-    /** @property Stackdriver $stackdriver */
-    protected $stackdriver;
+    /** @var StackdriverAwareLoggerInterface $stackdriver */
+    private $stackdriver;
 
     /**
      * @param string $name
      * @param array $handlers
      * @param array $processors
      * @param Settings $settings
-     * @param Stackdriver $stackdriver
+     * @param StackdriverIntegrationInterface $stackdriver
      * @return void
      */
     public function __construct(
@@ -41,14 +54,13 @@ class Logger extends Monolog implements LoggerInterface
         array $handlers = [],
         array $processors = [],
         Settings $settings,
-        Stackdriver $stackdriver
+        StackdriverIntegrationInterface $stackdriver
     ) {
         parent::__construct(
             $name,
             $handlers,
             $processors
         );
-
         $this->settings = $settings;
         $this->stackdriver = $stackdriver;
     }
@@ -62,9 +74,9 @@ class Logger extends Monolog implements LoggerInterface
     }
 
     /**
-     * @return Stackdriver
+     * {@inheritdoc}
      */
-    public function getStackdriver(): Stackdriver
+    public function getStackdriver(): StackdriverIntegrationInterface
     {
         return $this->stackdriver;
     }
@@ -82,34 +94,32 @@ class Logger extends Monolog implements LoggerInterface
             $levelMap = GoogleCloudLogger::getLogLevelMap();
 
             /** @var string $logLevel */
-            $logLevel = is_numeric($level)
-                ? strtolower($levelMap[$level])
-                : $level;
+            $logLevel = is_numeric($level) ? strtolower($levelMap[$level]) : $level;
 
             /** @var array $logLevels */
-            $logLevels = $this->getStackdriver()->getLogLevels();
+            $logLevels = $this->getSettings()->getLogLevelsArray();
 
             if (in_array($logLevel, $logLevels)) {
+                /** @var Google\Cloud\Logging\PsrLogger $logger */
+                $logger = $this->getStackdriver()->getLogger();
+
+                /** @var array $options */
+                $options = [];
+
+                if ($this->getSettings()->isErrorReportingEnabled()) {
+                    $options['@type'] = $this->getSettings()->getTypeUrn();
+                }
+
+                if ($this->getSettings()->includeContext()) {
+                    $options = array_merge(
+                        $options,
+                        $context
+                    );
+                }
+
                 try {
-                    /** @var Google\Cloud\Logging\PsrLogger $logger */
-                    $logger = $this->getStackdriver()->getLogger();
-
-                    /** @var array $options */
-                    $options = [];
-
-                    if ($this->getSettings()->isErrorReportingEnabled()) {
-                        $options['@type'] = $this->getSettings()->getTypeUrn();
-                    }
-
-                    if ($this->getSettings()->includeContext()) {
-                        $options = array_merge(
-                            $options,
-                            $context
-                        );
-                    }
-
                     $logger->log($level, $message, $options);
-                } catch (\Exception $e) {
+                } catch (InvalidArgumentException | Exception $e) {
                     /* No action required. */
                 }
             }
