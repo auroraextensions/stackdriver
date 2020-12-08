@@ -5,17 +5,22 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT License, which
+ * This source file is subject to the MIT license, which
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions_Stackdriver
+ * @package       AuroraExtensions\Stackdriver
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
- * @license       MIT License
+ * @license       MIT
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="AuroraExtensions_Stackdriver" setup_version="1.0.0"></module>
+    <module name="AuroraExtensions_Stackdriver" setup_version="1.0.0">
+        <sequence>
+            <module name="Magento_Store"/>
+            <module name="AuroraExtensions_ModuleComponents"/>
+        </sequence>
+    </module>
 </config>
