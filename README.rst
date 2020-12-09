@@ -20,5 +20,5 @@ Services
 .. _link1: https://cloud.google.com/logging/
 .. _link2: https://cloud.google.com/error-reporting/
 
-* `link1`_
-* `link2`_
+* |link1|_
+* |link2|_
