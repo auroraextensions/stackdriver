@@ -11,7 +11,7 @@
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions\Stackdriver\Model\Logging
- * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT
  */
 declare(strict_types=1);
@@ -20,15 +20,17 @@ namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use Exception;
 use AuroraExtensions\Stackdriver\{
+    Api\ReportedErrorEventMetadataProviderInterface,
     Api\StackdriverAwareLoggerInterface,
     Api\StackdriverIntegrationInterface,
-    Model\System\Module\Settings
+    Model\Config\LocalizedScopeDeploymentConfig
 };
 use Google\Cloud\Logging\Logger as GoogleCloudLogger;
-use Magento\Framework\Logger\Monolog;
+use Monolog\Logger as Monolog;
 use Psr\Log\{
     InvalidArgumentException,
-    LoggerInterface
+    LoggerInterface,
+    LogLevel
 };
 
 use function array_merge;
@@ -36,24 +38,27 @@ use function in_array;
 use function is_numeric;
 use function strtolower;
 
-class Logger extends Monolog implements LoggerInterface, StackdriverAwareLoggerInterface
+class Logger extends Monolog implements StackdriverAwareLoggerInterface, ReportedErrorEventMetadataProviderInterface
 {
-    /** @var StackdriverAwareLoggerInterface $stackdriver */
-    private $stackdriver;
+    /** @var LocalizedScopeDeploymentConfig $deploymentConfig */
+    private $deploymentConfig;
+
+    /** @var LoggerInterface $logger */
+    private $logger;
 
     /**
      * @param string $name
      * @param array $handlers
      * @param array $processors
-     * @param Settings $settings
+     * @param LocalizedScopeDeploymentConfig $deploymentConfig
      * @param StackdriverIntegrationInterface $stackdriver
      * @return void
      */
     public function __construct(
-        $name,
+        string $name,
         array $handlers = [],
         array $processors = [],
-        Settings $settings,
+        LocalizedScopeDeploymentConfig $deploymentConfig,
         StackdriverIntegrationInterface $stackdriver
     ) {
         parent::__construct(
@@ -61,70 +66,94 @@ class Logger extends Monolog implements LoggerInterface, StackdriverAwareLoggerI
             $handlers,
             $processors
         );
-        $this->settings = $settings;
-        $this->stackdriver = $stackdriver;
-    }
-
-    /**
-     * @return Settings
-     */
-    public function getSettings(): Settings
-    {
-        return $this->settings;
+        $this->deploymentConfig = $deploymentConfig;
+        $this->logger = $stackdriver->getLogger();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getStackdriver(): StackdriverIntegrationInterface
+    public function getLabels(): array
     {
-        return $this->stackdriver;
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogLevels(): array
+    {
+        return (array) $this->deploymentConfig->get('logging/log_levels');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTypeUrn(): string
+    {
+        return $this->deploymentConfig->get('error_reporting/type_urn');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     /**
      * @param int|string $level
-     * @param string $message
+     * @param string|Exception $message
      * @param array $context
      * @return bool
      */
-    public function addRecord($level, $message, array $context = [])
+    public function addRecord($level, $message, array $context = []): bool
     {
-        if ($this->getSettings()->isModuleEnabled()) {
+        /** @var bool $isLoggingEnabled */
+        $isLoggingEnabled = !$this->deploymentConfig->get('logging/disabled');
+
+        if ($isLoggingEnabled) {
             /** @var array $levelMap */
             $levelMap = GoogleCloudLogger::getLogLevelMap();
 
             /** @var string $logLevel */
             $logLevel = is_numeric($level) ? strtolower($levelMap[$level]) : $level;
 
-            /** @var array $logLevels */
-            $logLevels = $this->getSettings()->getLogLevelsArray();
-
-            if (in_array($logLevel, $logLevels)) {
-                /** @var Google\Cloud\Logging\PsrLogger $logger */
-                $logger = $this->getStackdriver()->getLogger();
-
+            if (in_array($logLevel, $this->getLogLevels())) {
                 /** @var array $options */
                 $options = [];
 
-                if ($this->getSettings()->isErrorReportingEnabled()) {
-                    $options['@type'] = $this->getSettings()->getTypeUrn();
+                /** @var bool $isErrorReportingEnabled */
+                $isErrorReportingEnabled = !$this->deploymentConfig->get('error_reporting/disabled');
+
+                if ($isErrorReportingEnabled) {
+                    $options['@type'] = $this->getTypeUrn();
                 }
 
-                if ($this->getSettings()->includeContext()) {
-                    $options = array_merge(
-                        $options,
-                        $context
-                    );
+                /** @var bool $includeContext */
+                $includeContext = (bool) $this->deploymentConfig->get('logging/include_context');
+
+                if ($includeContext) {
+                    $options = array_merge($options, $context);
                 }
 
                 try {
-                    $logger->log($level, $message, $options);
+                    $this->logger->log($level, $message, $options);
                 } catch (InvalidArgumentException | Exception $e) {
-                    /* No action required. */
+                    parent::addRecord(LogLevel::ERROR, $e->getMessage(), ['exception' => $e]);
                 }
             }
         }
 
-        return parent::addRecord($level, $message, $context);
+        if ($message instanceof Exception && !isset($context['exception'])) {
+            $context['exception'] = $message;
+        }
+
+        return parent::addRecord(
+            $level,
+            $message instanceof Exception ? $message->getMessage() : $message,
+            $context
+        );
     }
 }
