@@ -11,7 +11,7 @@
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions\Stackdriver
- * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT
  */
 use Magento\Framework\Component\ComponentRegistrar;
