@@ -12,36 +12,23 @@
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions\Stackdriver
- * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Stackdriver"/>
     <preference for="AuroraExtensions\Stackdriver\Api\StackdriverAwareLoggerInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
-    <preference for="Magento\Framework\Logger\Monolog" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
+    <preference for="Psr\Log\LoggerInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
 
-    <type name="AuroraExtensions\Stackdriver\Model\System\Module\Settings">
+    <type name="AuroraExtensions\Stackdriver\Model\Logging\Logger">
         <arguments>
-            <argument name="data" xsi:type="array">
-                <item name="log_levels" xsi:type="array">
-                    <item name="emergency" xsi:type="const">Psr\Log\LogLevel::EMERGENCY</item>
-                    <item name="alert" xsi:type="const">Psr\Log\LogLevel::ALERT</item>
-                    <item name="critical" xsi:type="const">Psr\Log\LogLevel::CRITICAL</item>
-                    <item name="error" xsi:type="const">Psr\Log\LogLevel::ERROR</item>
-                    <item name="warning" xsi:type="const">Psr\Log\LogLevel::WARNING</item>
-                    <item name="notice" xsi:type="const">Psr\Log\LogLevel::NOTICE</item>
-                    <item name="info" xsi:type="const">Psr\Log\LogLevel::INFO</item>
-                    <item name="debug" xsi:type="const">Psr\Log\LogLevel::DEBUG</item>
-                </item>
+            <argument name="name" xsi:type="string">stackdriver</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Magento\Framework\Logger\Handler\System</item>
+                <item name="debug" xsi:type="object">Magento\Framework\Logger\Handler\Debug</item>
+                <item name="syslog" xsi:type="object">Magento\Framework\Logger\Handler\Syslog</item>
             </argument>
         </arguments>
     </type>
-
-    <virtualType name="AuroraExtensions\Stackdriver\Model\Backend\Source\Select\LogLevels"
-                 type="AuroraExtensions\Stackdriver\Model\Backend\Source\Select\Generic">
-        <arguments>
-            <argument name="key" xsi:type="string">log_levels</argument>
-        </arguments>
-    </virtualType>
 </config>
