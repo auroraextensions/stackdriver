@@ -11,41 +11,15 @@
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
  * @package       AuroraExtensions\Stackdriver\Exception
- * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT
  */
 declare(strict_types=1);
 
 namespace AuroraExtensions\Stackdriver\Exception;
 
-use Exception;
-use AuroraExtensions\Stackdriver\Model\Logging\Stackdriver;
-use Google\Cloud\ErrorReporting\Bootstrap;
-use Magento\Framework\{
-    Exception\LocalizedException,
-    Phrase
-};
+use Magento\Framework\Exception\LocalizedException;
 
 class StackdriverAwareLocalizedException extends LocalizedException
 {
-    /**
-     * @param Phrase $phrase
-     * @param Exception|null $cause
-     * @param int|string $code
-     * @param Stackdriver|null $stackdriver
-     * @return void
-     */
-    public function __construct(
-        Phrase $phrase,
-        Exception $cause = null,
-        $code = 0,
-        Stackdriver $stackdriver = null
-    ) {
-        parent::__construct(
-            $phrase,
-            $cause,
-            $code
-        );
-        Bootstrap::init($stackdriver->getLogger());
-    }
 }
