@@ -17,7 +17,7 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Stackdriver"/>
+    <preference for="AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface" type="AuroraExtensions\Stackdriver\Model\Service\Stackdriver"/>
     <preference for="AuroraExtensions\Stackdriver\Api\StackdriverAwareLoggerInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
     <preference for="Psr\Log\LoggerInterface" type="AuroraExtensions\Stackdriver\Model\Logging\Logger"/>
 
