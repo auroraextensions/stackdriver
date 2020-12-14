@@ -10,13 +10,13 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/stackdriver/LICENSE.txt
  *
- * @package       AuroraExtensions\Stackdriver\Model\Logging
+ * @package       AuroraExtensions\Stackdriver\Model\Service
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\Stackdriver\Model\Logging;
+namespace AuroraExtensions\Stackdriver\Model\Service;
 
 use AuroraExtensions\ModuleComponents\Exception\ExceptionFactory;
 use AuroraExtensions\Stackdriver\{
