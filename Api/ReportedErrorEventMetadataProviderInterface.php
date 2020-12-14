@@ -1,6 +1,6 @@
 <?php
 /**
- * StackdriverAwareLoggerInterface.php
+ * ReportedErrorEventMetadataProviderInterface.php
  *
  * NOTICE OF LICENSE
  *
@@ -18,17 +18,10 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\Stackdriver\Api;
 
-use Psr\Log\LoggerAwareInterface;
-
-interface StackdriverAwareLoggerInterface extends LoggerAwareInterface
+interface ReportedErrorEventMetadataProviderInterface
 {
     /**
-     * @return array
+     * @return string
      */
-    public function getLabels(): array;
-
-    /**
-     * @return array
-     */
-    public function getLogLevels(): array;
+    public function getTypeUrn(): string;
 }

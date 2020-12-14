@@ -15,9 +15,9 @@
   "require": {
     "php": "~7.2.0||~7.3.0||~7.4.0||~8.0.0",
     "psr/log": "~1.1.0",
+    "monolog/monolog": "^1.17",
     "magento/framework": "^100||^101||^102||^103",
-    "magento/module-store": "^100||^101",
-    "google/cloud-core": "~1.29.0",
+    "google/cloud-core": "~1.33.0",
     "google/cloud-logging": "~1.16.5",
     "google/cloud-error-reporting": "~0.14.5",
     "auroraextensions/modulecomponents": "^100||^101"
