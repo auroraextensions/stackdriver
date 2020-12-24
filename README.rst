@@ -15,10 +15,14 @@ time to resolution (MTTR). Stackdriver doesn't require extensive integration or 
 Services
 --------
 
+The following Stackdriver services are supported:
+
 .. |link1| replace:: Stackdriver Logging
 .. |link2| replace:: Stackdriver Error Reporting
 .. _link1: https://cloud.google.com/logging/
 .. _link2: https://cloud.google.com/error-reporting/
 
 * |link1|_
-* |link2|_
+* |link2|_ [#]_
+
+.. [#] The Error Reporting API integration is fulfilled through the Logging API.
