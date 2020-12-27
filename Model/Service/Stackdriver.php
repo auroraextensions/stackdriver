@@ -18,11 +18,14 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\Stackdriver\Model\Service;
 
-use AuroraExtensions\ModuleComponents\Exception\ExceptionFactory;
+use AuroraExtensions\ModuleComponents\{
+    Api\LocalizedScopeDeploymentConfigInterface,
+    Api\LocalizedScopeDeploymentConfigInterfaceFactory,
+    Exception\ExceptionFactory
+};
 use AuroraExtensions\Stackdriver\{
     Api\StackdriverIntegrationInterface,
-    Exception\InvalidStackdriverSetupException,
-    Model\Config\LocalizedScopeDeploymentConfig
+    Exception\InvalidStackdriverSetupException
 };
 use Google\Cloud\{
     Core\Report\SimpleMetadataProvider,
@@ -37,7 +40,7 @@ class Stackdriver implements StackdriverIntegrationInterface
     /** @constant string DEFAULT_SERVICE */
     public const DEFAULT_SERVICE = 'main';
 
-    /** @var LocalizedScopeDeploymentConfig $deploymentConfig */
+    /** @var LocalizedScopeDeploymentConfigInterface $deploymentConfig */
     private $deploymentConfig;
 
     /** @var ExceptionFactory $exceptionFactory */
@@ -47,15 +50,15 @@ class Stackdriver implements StackdriverIntegrationInterface
     private $logger;
 
     /**
-     * @param LocalizedScopeDeploymentConfig $deploymentConfig
+     * @param LocalizedScopeDeploymentConfigInterfaceFactory $deploymentConfigFactory
      * @param ExceptionFactory $exceptionFactory
      * @return void
      */
     public function __construct(
-        LocalizedScopeDeploymentConfig $deploymentConfig,
+        LocalizedScopeDeploymentConfigInterfaceFactory $deploymentConfigFactory,
         ExceptionFactory $exceptionFactory
     ) {
-        $this->deploymentConfig = $deploymentConfig;
+        $this->deploymentConfig = $deploymentConfigFactory->create(['scope' => 'stackdriver']);
         $this->exceptionFactory = $exceptionFactory;
         $this->initialize();
     }

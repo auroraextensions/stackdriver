@@ -19,11 +19,14 @@ declare(strict_types=1);
 namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use Exception;
+use AuroraExtensions\ModuleComponents\{
+    Api\LocalizedScopeDeploymentConfigInterface,
+    Api\LocalizedScopeDeploymentConfigInterfaceFactory
+};
 use AuroraExtensions\Stackdriver\{
     Api\ReportedErrorEventMetadataProviderInterface,
     Api\StackdriverAwareLoggerInterface,
-    Api\StackdriverIntegrationInterface,
-    Model\Config\LocalizedScopeDeploymentConfig
+    Api\StackdriverIntegrationInterface
 };
 use Google\Cloud\Logging\Logger as GoogleCloudLogger;
 use Monolog\Logger as Monolog;
@@ -40,7 +43,7 @@ use function strtolower;
 
 class Logger extends Monolog implements StackdriverAwareLoggerInterface, ReportedErrorEventMetadataProviderInterface
 {
-    /** @var LocalizedScopeDeploymentConfig $deploymentConfig */
+    /** @var LocalizedScopeDeploymentConfigInterface $deploymentConfig */
     private $deploymentConfig;
 
     /** @var LoggerInterface $logger */
@@ -50,7 +53,7 @@ class Logger extends Monolog implements StackdriverAwareLoggerInterface, Reporte
      * @param string $name
      * @param array $handlers
      * @param array $processors
-     * @param LocalizedScopeDeploymentConfig $deploymentConfig
+     * @param LocalizedScopeDeploymentConfigInterfaceFactory $deploymentConfigFactory
      * @param StackdriverIntegrationInterface $stackdriver
      * @return void
      */
@@ -58,7 +61,7 @@ class Logger extends Monolog implements StackdriverAwareLoggerInterface, Reporte
         string $name,
         array $handlers = [],
         array $processors = [],
-        LocalizedScopeDeploymentConfig $deploymentConfig,
+        LocalizedScopeDeploymentConfigInterfaceFactory $deploymentConfigFactory,
         StackdriverIntegrationInterface $stackdriver
     ) {
         parent::__construct(
@@ -66,7 +69,7 @@ class Logger extends Monolog implements StackdriverAwareLoggerInterface, Reporte
             $handlers,
             $processors
         );
-        $this->deploymentConfig = $deploymentConfig;
+        $this->deploymentConfig = $deploymentConfigFactory->create(['scope' => 'stackdriver']);
         $this->logger = $stackdriver->getLogger();
     }
 
