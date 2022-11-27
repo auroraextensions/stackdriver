@@ -18,26 +18,20 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\Stackdriver\Model\Service;
 
-use AuroraExtensions\ModuleComponents\{
-    Api\LocalizedScopeDeploymentConfigInterface,
-    Api\LocalizedScopeDeploymentConfigInterfaceFactory,
-    Exception\ExceptionFactory
-};
-use AuroraExtensions\Stackdriver\{
-    Api\StackdriverIntegrationInterface,
-    Exception\InvalidStackdriverSetupException
-};
-use Google\Cloud\{
-    Core\Report\SimpleMetadataProvider,
-    ErrorReporting\Bootstrap,
-    Logging\LoggingClient
-};
+use AuroraExtensions\ModuleComponents\Api\LocalizedScopeDeploymentConfigInterface;
+use AuroraExtensions\ModuleComponents\Api\LocalizedScopeDeploymentConfigInterfaceFactory;
+use AuroraExtensions\ModuleComponents\Exception\ExceptionFactory;
+use AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface;
+use AuroraExtensions\Stackdriver\Exception\InvalidStackdriverSetupException;
+use Google\Cloud\Core\Report\SimpleMetadataProvider;
+use Google\Cloud\ErrorReporting\Bootstrap;
+use Google\Cloud\Logging\LoggingClient;
 use Psr\Log\LoggerInterface;
+
 use function __;
 
 class Stackdriver implements StackdriverIntegrationInterface
 {
-    /** @constant string DEFAULT_SERVICE */
     public const DEFAULT_SERVICE = 'main';
 
     /** @var LocalizedScopeDeploymentConfigInterface $deploymentConfig */
@@ -77,7 +71,8 @@ class Stackdriver implements StackdriverIntegrationInterface
 
         if (!empty($projectName) && !empty($keyFilePath)) {
             /** @var string $logChannel */
-            $logChannel = $this->deploymentConfig->get('logging/log_channel') ?? static::DEFAULT_SERVICE;
+            $logChannel = $this->deploymentConfig->get('logging/log_channel')
+                ?? static::DEFAULT_SERVICE;
 
             /** @var LoggingClient $client */
             $client = new LoggingClient([

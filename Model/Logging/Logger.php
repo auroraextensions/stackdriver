@@ -19,29 +19,24 @@ declare(strict_types=1);
 namespace AuroraExtensions\Stackdriver\Model\Logging;
 
 use Exception;
-use AuroraExtensions\ModuleComponents\{
-    Api\LocalizedScopeDeploymentConfigInterface,
-    Api\LocalizedScopeDeploymentConfigInterfaceFactory
-};
-use AuroraExtensions\Stackdriver\{
-    Api\ReportedErrorEventMetadataProviderInterface,
-    Api\StackdriverAwareLoggerInterface,
-    Api\StackdriverIntegrationInterface
-};
+use AuroraExtensions\ModuleComponents\Api\LocalizedScopeDeploymentConfigInterface;
+use AuroraExtensions\ModuleComponents\Api\LocalizedScopeDeploymentConfigInterfaceFactory;
+use AuroraExtensions\Stackdriver\Api\ReportedErrorEventMetadataProviderInterface;
+use AuroraExtensions\Stackdriver\Api\StackdriverAwareLoggerInterface;
+use AuroraExtensions\Stackdriver\Api\StackdriverIntegrationInterface;
 use Google\Cloud\Logging\Logger as GoogleCloudLogger;
 use Monolog\Logger as Monolog;
-use Psr\Log\{
-    InvalidArgumentException,
-    LoggerInterface,
-    LogLevel
-};
+use Psr\Log\InvalidArgumentException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 use function array_merge;
 use function in_array;
-use function is_numeric;
 use function strtolower;
 
-class Logger extends Monolog implements StackdriverAwareLoggerInterface, ReportedErrorEventMetadataProviderInterface
+class Logger extends Monolog implements
+    StackdriverAwareLoggerInterface,
+    ReportedErrorEventMetadataProviderInterface
 {
     /** @var LocalizedScopeDeploymentConfigInterface $deploymentConfig */
     private $deploymentConfig;
@@ -111,8 +106,11 @@ class Logger extends Monolog implements StackdriverAwareLoggerInterface, Reporte
      * @param array $context
      * @return bool
      */
-    public function addRecord($level, $message, array $context = []): bool
-    {
+    public function addRecord(
+        $level,
+        $message,
+        array $context = []
+    ): bool {
         /** @var bool $isLoggingEnabled */
         $isLoggingEnabled = !$this->deploymentConfig->get('logging/disabled');
 
@@ -121,7 +119,9 @@ class Logger extends Monolog implements StackdriverAwareLoggerInterface, Reporte
             $levelMap = GoogleCloudLogger::getLogLevelMap();
 
             /** @var string $logLevel */
-            $logLevel = is_numeric($level) ? strtolower($levelMap[$level]) : $level;
+            $logLevel = strtolower(
+                $levelMap[$level] ?? (string) $level
+            );
 
             if (in_array($logLevel, $this->getLogLevels())) {
                 /** @var array $options */
@@ -138,13 +138,24 @@ class Logger extends Monolog implements StackdriverAwareLoggerInterface, Reporte
                 $includeContext = (bool) $this->deploymentConfig->get('logging/include_context');
 
                 if ($includeContext) {
-                    $options = array_merge($options, $context);
+                    $options = array_merge(
+                        $options,
+                        $context
+                    );
                 }
 
                 try {
-                    $this->logger->log($level, $message, $options);
+                    $this->logger->log(
+                        $level,
+                        $message,
+                        $options
+                    );
                 } catch (InvalidArgumentException | Exception $e) {
-                    parent::addRecord(LogLevel::ERROR, $e->getMessage(), ['exception' => $e]);
+                    parent::addRecord(
+                        LogLevel::ERROR,
+                        $e->getMessage(),
+                        ['exception' => $e]
+                    );
                 }
             }
         }
